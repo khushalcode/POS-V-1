@@ -96,22 +96,5 @@
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.5",
     "typescript": "^5"
-  },
-  "main": "electron/main.js",
-  "description": "ServingSync POS - restaurant point of sale system",
-  "author": "Khushal",
-  "build": {
-    "appId": "com.servingsync.pos",
-    "productName": "ServingSync POS",
-    "files": [
-      "electron/**/*",
-      ".next/standalone/**/*",
-      ".next/static/**/*",
-      "public/**/*",
-      "package.json"
-    ],
-    "win": {
-      "target": "nsis"
-    }
   }
 }
