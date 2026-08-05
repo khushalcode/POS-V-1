@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Force-install sharp Windows binary
+        run: npm install --no-save --include=optional --os=win32 --cpu=x64 sharp
+
 
       - name: Generate Windows .ico icon
         run: node scripts/gen-icon.js
