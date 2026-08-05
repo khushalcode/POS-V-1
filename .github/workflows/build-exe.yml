@@ -24,10 +24,8 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Rebuild native deps for Windows x64
-        run: npm install --no-save --os=win32 --cpu=x64 sharp lightningcss
 
       - name: Generate Windows .ico icon
         run: node scripts/gen-icon.js
