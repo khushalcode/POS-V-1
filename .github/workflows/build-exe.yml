@@ -1,18 +1,12 @@
 name: Build Windows .exe
 
-# ─────────────────────────────────────────────────────────────
-# Builds the ServingSync POS Windows installer (.exe) using
-# electron-builder. Runs on every push to main, on PRs, and
-# supports manual triggers.
-# ─────────────────────────────────────────────────────────────
-
 on:
   push:
     branches: [main, master]
     tags: ['v*']
   pull_request:
     branches: [main, master]
-  workflow_dispatch:        # manual trigger from GitHub Actions tab
+  workflow_dispatch:
 
 jobs:
   build-windows:
@@ -26,11 +20,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Rebuild sharp for Windows x64
+        run: npm install --no-save --os=win32 --cpu=x64 sharp
 
       - name: Generate Windows .ico icon
         run: node scripts/gen-icon.js
@@ -41,13 +38,12 @@ jobs:
       - name: Build Next.js (standalone)
         run: npm run build
         env:
-          # Skip env validation if your build expects secrets
           SKIP_ENV_VALIDATION: 'true'
 
       - name: Build Electron .exe installer
         run: npx electron-builder --win --x64
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # needed if --publish is set
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload .exe artifact
         uses: actions/upload-artifact@v4
@@ -59,7 +55,6 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      # ─── Optional: attach to GitHub Release when building a tag ───
       - name: Attach .exe to GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
