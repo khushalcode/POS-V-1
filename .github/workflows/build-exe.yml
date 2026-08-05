@@ -51,7 +51,7 @@ jobs:
           name: servingsync-windows-exe
           path: |
             dist/*.exe
-            dist/win-unpacked/ServingSync POS.exe
+            dist/win-unpacked/Thuso.exe
           if-no-files-found: error
           retention-days: 30
 
